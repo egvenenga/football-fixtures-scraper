@@ -73,10 +73,19 @@ def create_matches_dict(matches):
             "home_team": match["home"]["name"],
             "round": match["round"],
             "cancelled": match["status"]["cancelled"],
-            "time": match["status"]["utcTime"],
+            "date": match["status"]["utcTime"],
         }
         for match in matches
     ]
+
+
+def create_date_hour():
+    date_hour_range = pd.date_range(start="2023-01-01", end="2024-12-31", freq="H")
+
+    # Create DataFrame
+    df = pd.DataFrame({"date_hour": date_hour_range})
+
+    return df
 
 
 def main():
@@ -127,5 +136,7 @@ def main():
 
 if __name__ == "__main__":
     df = main()
+    dates_df = create_date_hour()
 
     df.to_csv("./matches.csv", index=False)
+    dates_df.to_csv("./dates.csv", index=False)
