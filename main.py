@@ -1,7 +1,8 @@
 import json
 import requests
-import pandas as pd
 import logging
+import pandas as pd
+from pprint import pprint
 from requests.exceptions import RequestException
 
 # Set up logging
@@ -69,11 +70,13 @@ def create_matches_dict(matches):
     """
     return [
         {
-            "away_team": match["away"]["name"],
-            "home_team": match["home"]["name"],
-            "round": match["round"],
-            "cancelled": match["status"]["cancelled"],
-            "date": match["status"]["utcTime"],
+            "away_team": match.get("away", {}).get("name", None),
+            "home_team": match.get("home", {}).get("name", None),
+            "round": match.get("round", None),
+            "cancelled": match.get("status", {}).get("cancelled", None),
+            "finished": match.get("status", {}).get("finished", None),
+            "date": match.get("status", {}).get("utcTime", None),
+            "result": match.get("status", {}).get("scoreStr", None),
         }
         for match in matches
     ]
@@ -130,6 +133,11 @@ def main():
                 "NED": "Netherlands",
             }
         )
+
+        final_df[["home_score", "away_score"]] = final_df["result"].str.split(
+            " - ", expand=True
+        )
+        final_df.drop(columns=["result"], inplace=True)
 
         return final_df
 
