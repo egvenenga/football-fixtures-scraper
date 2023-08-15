@@ -1,8 +1,6 @@
-import json
 import requests
 import logging
 import pandas as pd
-from pprint import pprint
 from requests.exceptions import RequestException
 
 # Set up logging
@@ -12,20 +10,20 @@ logger = logging.getLogger(__name__)
 BASE_URL = "https://www.fotmob.com/api"
 
 
-def get_league_fixtures(session, id, season):
+def get_league_fixtures(session, league_id, season):
     """
-    Function to fetch league details and matches from the API
+    Fetch league details and matches from the Fotmob API.
 
     Args:
-    session : requests.Session instance
-    id : id of the league
-    season : the season for which data is needed
+    - session (requests.Session): The session instance to use for the request.
+    - league_id (int): ID of the league to fetch.
+    - season (str): The target season in the format 'YYYY/YYYY'.
 
     Returns:
-    details and matches data if successful, None otherwise
+    - tuple: League details and matches data if successful, (None, None) otherwise.
     """
     league_url = f"{BASE_URL}/leagues"
-    params = {"id": id, "season": season}
+    params = {"id": league_id, "season": season}
 
     try:
         response = session.get(league_url, params=params)
@@ -36,19 +34,21 @@ def get_league_fixtures(session, id, season):
         return data["details"], data["matches"]["allMatches"]
 
     except RequestException as e:
-        logger.error(f"An error occurred while trying to get {league_url}: {e}")
+        logger.error(
+            f"An error occurred while fetching data for league ID {league_id}: {e}"
+        )
         return None, None
 
 
-def create_details_dict(details):
+def extract_details(details):
     """
-    Function to create a details dictionary from league details data
+    Extract key details from the league details data.
 
     Args:
-    details : league details data
+    - details (dict): Raw league details data.
 
     Returns:
-    details dictionary
+    - dict: Extracted details.
     """
     return {
         "country": details["country"],
@@ -58,93 +58,91 @@ def create_details_dict(details):
     }
 
 
-def create_matches_dict(matches):
+def extract_matches(matches):
     """
-    Function to create a list of match dictionaries from matches data
+    Extract key details from matches data and structure it in a list of dictionaries.
 
     Args:
-    matches : matches data
+    - matches (list): Raw matches data.
 
     Returns:
-    list of match dictionaries
+    - list: A list of dictionaries with key match details.
     """
     return [
         {
-            "away_team": match.get("away", {}).get("name", None),
-            "home_team": match.get("home", {}).get("name", None),
-            "round": match.get("round", None),
-            "cancelled": match.get("status", {}).get("cancelled", None),
-            "finished": match.get("status", {}).get("finished", None),
-            "date": match.get("status", {}).get("utcTime", None),
-            "result": match.get("status", {}).get("scoreStr", None),
+            "away_team": match.get("away", {}).get("name"),
+            "home_team": match.get("home", {}).get("name"),
+            "round": match.get("round"),
+            "cancelled": match.get("status", {}).get("cancelled"),
+            "finished": match.get("status", {}).get("finished"),
+            "date": match.get("status", {}).get("utcTime"),
+            "result": match.get("status", {}).get("scoreStr"),
         }
         for match in matches
     ]
 
 
-def create_date_hour():
+def generate_date_hours():
+    """
+    Generate a DataFrame with hourly timestamps between two dates.
+
+    Returns:
+    - DataFrame: DataFrame with hourly timestamps.
+    """
     date_hour_range = pd.date_range(start="2023-01-01", end="2024-12-31", freq="H")
-
-    # Create DataFrame
-    df = pd.DataFrame({"date_hour": date_hour_range})
-
-    return df
+    return pd.DataFrame({"date_hour": date_hour_range})
 
 
 def main():
+    # Define leagues and target season
     leagues = [
-        {"league_id": 87, "league_name": "laliga"},
-        {"league_id": 47, "league_name": "premier-league"},
-        {"league_id": 54, "league_name": "bundesliga"},
-        {"league_id": 55, "league_name": "serie-a"},
-        {"league_id": 53, "league_name": "ligue-1"},
-        {"league_id": 57, "league_name": "eredivisie"},
+        {"id": 87, "name": "laliga"},
+        {"id": 47, "name": "premier-league"},
+        {"id": 54, "name": "bundesliga"},
+        {"id": 55, "name": "serie-a"},
+        {"id": 53, "name": "ligue-1"},
+        {"id": 57, "name": "eredivisie"},
     ]
 
     season = "2023/2024"
+    final_data = pd.DataFrame()
 
-    final_df = pd.DataFrame()
-
-    with requests.Session() as s:
+    with requests.Session() as session:
         for league in leagues:
-            league_id = league["league_id"]
-            league_name = league["league_name"]
-
-            details, matches = get_league_fixtures(s, league_id, season)
+            details, matches = get_league_fixtures(session, league["id"], season)
 
             if details and matches:
-                details_dict = create_details_dict(details)
-                matches_dict = create_matches_dict(matches)
+                details_dict = extract_details(details)
+                matches_dict = extract_matches(matches)
 
-                df = pd.DataFrame(matches_dict)
+                league_df = pd.DataFrame(matches_dict)
+                league_df = league_df.assign(**details_dict)
 
-                # Add the details from details_dict to the DataFrame
-                df = df.assign(**details_dict)
+                final_data = pd.concat([final_data, league_df], ignore_index=True)
 
-                final_df = pd.concat([final_df, df], ignore_index=True)
+        # Mapping country codes to full names
+        country_map = {
+            "ESP": "Spain",
+            "ENG": "England",
+            "GER": "Germany",
+            "ITA": "Italy",
+            "FRA": "France",
+            "NED": "Netherlands",
+        }
+        final_data["country"] = final_data["country"].map(country_map)
 
-        final_df["country"] = final_df["country"].map(
-            {
-                "ESP": "Spain",
-                "ENG": "England",
-                "GER": "Germany",
-                "ITA": "Italy",
-                "FRA": "France",
-                "NED": "Netherlands",
-            }
-        )
-
-        final_df[["home_score", "away_score"]] = final_df["result"].str.split(
+        # Splitting result column into home and away scores
+        final_data[["home_score", "away_score"]] = final_data["result"].str.split(
             " - ", expand=True
         )
-        final_df.drop(columns=["result"], inplace=True)
+        final_data.drop(columns=["result"], inplace=True)
 
-        return final_df
+        return final_data
 
 
 if __name__ == "__main__":
-    df = main()
-    dates_df = create_date_hour()
+    matches_df = main()
+    date_hours_df = generate_date_hours()
 
-    df.to_csv("./matches.csv", index=False)
-    dates_df.to_csv("./dates.csv", index=False)
+    matches_df.to_csv("./matches.csv", index=False)
+    date_hours_df.to_csv("./dates.csv", index=False)

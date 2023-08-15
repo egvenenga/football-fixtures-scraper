@@ -2,11 +2,11 @@ away_team,home_team,round,cancelled,finished,date,country,name,selectedSeason,ty
 Rayo Vallecano,Almeria,1,False,True,2023-08-11T17:30:00.000Z,Spain,LaLiga,2023/2024,league,0,2
 Valencia,Sevilla,1,False,True,2023-08-11T20:00:00.000Z,Spain,LaLiga,2023/2024,league,1,2
 Girona,Real Sociedad,1,False,True,2023-08-12T15:00:00.000Z,Spain,LaLiga,2023/2024,league,1,1
-Mallorca,Las Palmas,1,False,False,2023-08-12T17:30:00.000Z,Spain,LaLiga,2023/2024,league,,
-Real Madrid,Athletic Club,1,False,False,2023-08-12T19:30:00.000Z,Spain,LaLiga,2023/2024,league,,
-Osasuna,Celta Vigo,1,False,False,2023-08-13T15:00:00.000Z,Spain,LaLiga,2023/2024,league,,
-Real Betis,Villarreal,1,False,False,2023-08-13T17:30:00.000Z,Spain,LaLiga,2023/2024,league,,
-Barcelona,Getafe,1,False,False,2023-08-13T19:30:00.000Z,Spain,LaLiga,2023/2024,league,,
+Mallorca,Las Palmas,1,False,True,2023-08-12T17:30:00.000Z,Spain,LaLiga,2023/2024,league,1,1
+Real Madrid,Athletic Club,1,False,True,2023-08-12T19:30:00.000Z,Spain,LaLiga,2023/2024,league,0,2
+Osasuna,Celta Vigo,1,False,True,2023-08-13T15:00:00.000Z,Spain,LaLiga,2023/2024,league,0,2
+Real Betis,Villarreal,1,False,True,2023-08-13T17:30:00.000Z,Spain,LaLiga,2023/2024,league,1,2
+Barcelona,Getafe,1,False,True,2023-08-13T19:30:00.000Z,Spain,LaLiga,2023/2024,league,0,0
 Deportivo Alaves,Cadiz,1,False,False,2023-08-14T17:30:00.000Z,Spain,LaLiga,2023/2024,league,,
 Granada,Atletico Madrid,1,False,False,2023-08-14T19:30:00.000Z,Spain,LaLiga,2023/2024,league,,
 Villarreal,Mallorca,2,False,False,2023-08-18T17:30:00.000Z,Spain,LaLiga,2023/2024,league,,
@@ -386,8 +386,8 @@ Luton Town,Brighton & Hove Albion,1,False,True,2023-08-12T14:00:00.000Z,England,
 Fulham,Everton,1,False,True,2023-08-12T14:00:00.000Z,England,Premier League,2023/2024,league,0,1
 Crystal Palace,Sheffield United,1,False,True,2023-08-12T14:00:00.000Z,England,Premier League,2023/2024,league,0,1
 Aston Villa,Newcastle United,1,False,True,2023-08-12T16:30:00.000Z,England,Premier League,2023/2024,league,5,1
-Tottenham Hotspur,Brentford,1,False,False,2023-08-13T13:00:00.000Z,England,Premier League,2023/2024,league,,
-Liverpool,Chelsea,1,False,False,2023-08-13T15:30:00.000Z,England,Premier League,2023/2024,league,,
+Tottenham Hotspur,Brentford,1,False,True,2023-08-13T13:00:00.000Z,England,Premier League,2023/2024,league,2,2
+Liverpool,Chelsea,1,False,True,2023-08-13T15:30:00.000Z,England,Premier League,2023/2024,league,1,1
 Wolverhampton Wanderers,Manchester United,1,False,False,2023-08-14T19:00:00.000Z,England,Premier League,2023/2024,league,,
 Sheffield United,Nottingham Forest,2,False,False,2023-08-18T18:45:00.000Z,England,Premier League,2023/2024,league,,
 Brentford,Fulham,2,False,False,2023-08-19T14:00:00.000Z,England,Premier League,2023/2024,league,,
@@ -1447,13 +1447,13 @@ Salernitana,Milan,38,False,False,2024-05-26T16:00:00.000Z,Italy,Serie A,2023/202
 Lecce,Napoli,38,False,False,2024-05-26T16:00:00.000Z,Italy,Serie A,2023/2024,league,,
 Lille,Nice,1,False,True,2023-08-11T19:00:00.000Z,France,Ligue 1,2023/2024,league,1,1
 Reims,Marseille,1,False,True,2023-08-12T15:00:00.000Z,France,Ligue 1,2023/2024,league,2,1
-Lorient,Paris Saint-Germain,1,False,False,2023-08-12T19:00:00.000Z,France,Ligue 1,2023/2024,league,,
-Lens,Brest,1,False,False,2023-08-13T11:00:00.000Z,France,Ligue 1,2023/2024,league,,
-Monaco,Clermont Foot,1,False,False,2023-08-13T13:00:00.000Z,France,Ligue 1,2023/2024,league,,
-Le Havre,Montpellier,1,False,False,2023-08-13T13:00:00.000Z,France,Ligue 1,2023/2024,league,,
-Toulouse,Nantes,1,False,False,2023-08-13T13:00:00.000Z,France,Ligue 1,2023/2024,league,,
-Metz,Rennes,1,False,False,2023-08-13T15:05:00.000Z,France,Ligue 1,2023/2024,league,,
-Lyon,Strasbourg,1,False,False,2023-08-13T18:45:00.000Z,France,Ligue 1,2023/2024,league,,
+Lorient,Paris Saint-Germain,1,False,True,2023-08-12T19:00:00.000Z,France,Ligue 1,2023/2024,league,0,0
+Lens,Brest,1,False,True,2023-08-13T11:00:00.000Z,France,Ligue 1,2023/2024,league,3,2
+Monaco,Clermont Foot,1,False,True,2023-08-13T13:00:00.000Z,France,Ligue 1,2023/2024,league,2,4
+Le Havre,Montpellier,1,False,True,2023-08-13T13:00:00.000Z,France,Ligue 1,2023/2024,league,2,2
+Toulouse,Nantes,1,False,True,2023-08-13T13:00:00.000Z,France,Ligue 1,2023/2024,league,1,2
+Metz,Rennes,1,False,True,2023-08-13T15:05:00.000Z,France,Ligue 1,2023/2024,league,5,1
+Lyon,Strasbourg,1,False,True,2023-08-13T18:45:00.000Z,France,Ligue 1,2023/2024,league,2,1
 Marseille,Metz,2,False,False,2023-08-18T19:00:00.000Z,France,Ligue 1,2023/2024,league,,
 Montpellier,Lyon,2,False,False,2023-08-19T15:00:00.000Z,France,Ligue 1,2023/2024,league,,
 Paris Saint-Germain,Toulouse,2,False,False,2023-08-19T19:00:00.000Z,France,Ligue 1,2023/2024,league,,
@@ -1754,12 +1754,12 @@ Brest,Toulouse,34,False,False,2024-05-18T18:00:00.000Z,France,Ligue 1,2023/2024,
 Vitesse,FC Volendam,1,False,True,2023-08-11T18:00:00.000Z,Netherlands,Eredivisie,2023/2024,league,1,2
 FC Utrecht,PSV Eindhoven,1,False,True,2023-08-12T14:30:00.000Z,Netherlands,Eredivisie,2023/2024,league,2,0
 RKC Waalwijk,SC Heerenveen,1,False,True,2023-08-12T16:45:00.000Z,Netherlands,Eredivisie,2023/2024,league,3,1
-Heracles,Ajax,1,False,False,2023-08-12T18:00:00.000Z,Netherlands,Eredivisie,2023/2024,league,,
-Sparta Rotterdam,PEC Zwolle,1,False,False,2023-08-12T19:00:00.000Z,Netherlands,Eredivisie,2023/2024,league,,
-Excelsior,NEC Nijmegen,1,False,False,2023-08-13T10:15:00.000Z,Netherlands,Eredivisie,2023/2024,league,,
-Go Ahead Eagles,AZ Alkmaar,1,False,False,2023-08-13T12:30:00.000Z,Netherlands,Eredivisie,2023/2024,league,,
-Fortuna Sittard,Feyenoord,1,False,False,2023-08-13T12:30:00.000Z,Netherlands,Eredivisie,2023/2024,league,,
-FC Twente,Almere City FC,1,False,False,2023-08-13T14:45:00.000Z,Netherlands,Eredivisie,2023/2024,league,,
+Heracles,Ajax,1,False,True,2023-08-12T18:00:00.000Z,Netherlands,Eredivisie,2023/2024,league,4,1
+Sparta Rotterdam,PEC Zwolle,1,False,True,2023-08-12T19:00:00.000Z,Netherlands,Eredivisie,2023/2024,league,1,2
+Excelsior,NEC Nijmegen,1,False,True,2023-08-13T10:15:00.000Z,Netherlands,Eredivisie,2023/2024,league,3,4
+Go Ahead Eagles,AZ Alkmaar,1,False,True,2023-08-13T12:30:00.000Z,Netherlands,Eredivisie,2023/2024,league,5,1
+Fortuna Sittard,Feyenoord,1,False,True,2023-08-13T12:30:00.000Z,Netherlands,Eredivisie,2023/2024,league,0,0
+FC Twente,Almere City FC,1,False,True,2023-08-13T14:45:00.000Z,Netherlands,Eredivisie,2023/2024,league,1,4
 NEC Nijmegen,Heracles,2,False,False,2023-08-18T18:00:00.000Z,Netherlands,Eredivisie,2023/2024,league,,
 Ajax,Excelsior,2,False,False,2023-08-19T14:30:00.000Z,Netherlands,Eredivisie,2023/2024,league,,
 PSV Eindhoven,Vitesse,2,False,False,2023-08-19T16:45:00.000Z,Netherlands,Eredivisie,2023/2024,league,,
