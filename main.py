@@ -1,6 +1,7 @@
 import requests
 import logging
 import pandas as pd
+from typing import Tuple, List, Dict, Union, Optional
 from requests.exceptions import RequestException
 
 # Set up logging
@@ -10,17 +11,19 @@ logger = logging.getLogger(__name__)
 BASE_URL = "https://www.fotmob.com/api"
 
 
-def get_league_fixtures(session, league_id, season):
+def get_league_fixtures(
+    session: requests.Session, league_id: int, season: str
+) -> Tuple[Optional[Dict], Optional[List[Dict]]]:
     """
     Fetch league details and matches from the Fotmob API.
 
     Args:
-    - session (requests.Session): The session instance to use for the request.
-    - league_id (int): ID of the league to fetch.
-    - season (str): The target season in the format 'YYYY/YYYY'.
+        session: The session instance to use for the request.
+        league_id: ID of the league to fetch.
+        season: The target season in the format 'YYYY/YYYY'.
 
     Returns:
-    - tuple: League details and matches data if successful, (None, None) otherwise.
+        League details and matches data if successful, (None, None) otherwise.
     """
     league_url = f"{BASE_URL}/leagues"
     params = {"id": league_id, "season": season}
@@ -32,7 +35,6 @@ def get_league_fixtures(session, league_id, season):
         data = response.json()
 
         return data["details"], data["matches"]["allMatches"]
-
     except RequestException as e:
         logger.error(
             f"An error occurred while fetching data for league ID {league_id}: {e}"
@@ -40,15 +42,15 @@ def get_league_fixtures(session, league_id, season):
         return None, None
 
 
-def extract_details(details):
+def extract_details(details: Dict) -> Dict[str, Union[str, int]]:
     """
     Extract key details from the league details data.
 
     Args:
-    - details (dict): Raw league details data.
+        details: Raw league details data.
 
     Returns:
-    - dict: Extracted details.
+        Extracted details.
     """
     return {
         "country": details["country"],
@@ -58,15 +60,15 @@ def extract_details(details):
     }
 
 
-def extract_matches(matches):
+def extract_matches(matches: List[Dict]) -> List[Dict[str, Union[str, int, bool]]]:
     """
     Extract key details from matches data and structure it in a list of dictionaries.
 
     Args:
-    - matches (list): Raw matches data.
+        matches: Raw matches data.
 
     Returns:
-    - list: A list of dictionaries with key match details.
+        A list of dictionaries with key match details.
     """
     return [
         {
@@ -82,18 +84,48 @@ def extract_matches(matches):
     ]
 
 
-def generate_date_hours():
+def process_dataframe(df):
+    """
+    Process the DataFrame: Map country codes to full names, split the result column,
+    and remove unnecessary columns.
+
+    Args:
+    - df (pd.DataFrame): The DataFrame containing the fetched league data.
+
+    Returns:
+    - pd.DataFrame: The processed DataFrame.
+    """
+
+    # Mapping country codes to full names
+    country_map = {
+        "ESP": "Spain",
+        "ENG": "England",
+        "GER": "Germany",
+        "ITA": "Italy",
+        "FRA": "France",
+        "NED": "Netherlands",
+    }
+    df["country"] = df["country"].map(country_map)
+
+    # Splitting result column into home and away scores
+    df[["home_score", "away_score"]] = df["result"].str.split(" - ", expand=True)
+    df.drop(columns=["result"], inplace=True)
+
+    return df
+
+
+def generate_date_hours() -> pd.DataFrame:
     """
     Generate a DataFrame with hourly timestamps between two dates.
 
     Returns:
-    - DataFrame: DataFrame with hourly timestamps.
+        DataFrame with hourly timestamps.
     """
     date_hour_range = pd.date_range(start="2023-01-01", end="2024-12-31", freq="H")
     return pd.DataFrame({"date_hour": date_hour_range})
 
 
-def main():
+def main() -> pd.DataFrame:
     # Define leagues and target season
     leagues = [
         {"id": 87, "name": "laliga"},
@@ -120,24 +152,9 @@ def main():
 
                 final_data = pd.concat([final_data, league_df], ignore_index=True)
 
-        # Mapping country codes to full names
-        country_map = {
-            "ESP": "Spain",
-            "ENG": "England",
-            "GER": "Germany",
-            "ITA": "Italy",
-            "FRA": "France",
-            "NED": "Netherlands",
-        }
-        final_data["country"] = final_data["country"].map(country_map)
+    final_data = process_dataframe(final_data)
 
-        # Splitting result column into home and away scores
-        final_data[["home_score", "away_score"]] = final_data["result"].str.split(
-            " - ", expand=True
-        )
-        final_data.drop(columns=["result"], inplace=True)
-
-        return final_data
+    return final_data
 
 
 if __name__ == "__main__":
