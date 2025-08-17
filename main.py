@@ -121,7 +121,7 @@ def generate_date_hours() -> pd.DataFrame:
     Returns:
         DataFrame with hourly timestamps.
     """
-    date_hour_range = pd.date_range(start="2023-01-01", end="2024-12-31", freq="H")
+    date_hour_range = pd.date_range(start="2025-08-01", end="2026-07-01", freq="H")
     return pd.DataFrame({"date_hour": date_hour_range})
 
 
@@ -136,7 +136,7 @@ def main() -> pd.DataFrame:
         {"id": 57, "name": "eredivisie"},
     ]
 
-    season = "2023/2024"
+    season = "2025/2026"
     final_data = pd.DataFrame()
 
     with requests.Session() as session:
